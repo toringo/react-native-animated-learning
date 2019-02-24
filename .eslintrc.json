@@ -5,8 +5,7 @@
   },
   "extends": "airbnb",
   "parser": "babel-eslint",
-  "globals": {
-  },
+  "globals": {},
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -52,6 +51,7 @@
     "no-param-reassign": 0,
     "no-nested-ternary": 0,
     "no-restricted-syntax": 0,
+    "no-useless-concat": 0,
     "no-unused-vars": [
       2,
       {
@@ -65,12 +65,14 @@
         "capIsNew": false
       }
     ],
+    "react/destructuring-assignment": 0,
     "react/prop-types": 0,
     "react/sort-comp": 0,
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": 0,
     "react/require-default-props": 0,
     "react/default-props-match-prop-types": 0,
+    "react-native/no-inline-styles": 2,
     "import/prefer-default-export": 0,
     "import/no-unresolved": [
       2,
@@ -107,7 +109,7 @@
       2,
       "comma"
     ],
-    "flowtype/require-parameter-type": 2,
+    "flowtype/require-parameter-type": 0,
     "flowtype/require-valid-file-annotation": 2,
     "flowtype/semi": [
       2,
