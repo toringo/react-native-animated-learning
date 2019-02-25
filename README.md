@@ -78,7 +78,71 @@
 
 综上，通过封装一个Animated的元素，内部通过数据绑定和DOM操作变更元素，结合React的生命周期完善内存管理，解决条件竞争问题，对外表现则与原生组件相同，实现了高效流畅的动画效果。
 
+### LayoutAnimation动画
+LayoutAnimation允许你在全局范围内创建和更新动画，这些动画会在下一次渲染或布局周期运行。
+#### 三种动画效果类型:
+- LayoutAnimation.caseInEaseOut
+- LayoutAnimation.linear
+- LayoutAnimation.spring
+除此之外， 还可以自定义，`configureNext(config: Config, onAnimationDidEnd?: Function, onError?: Function)`,  
+```
+@param config 表示动画相应的属性:
+  duration 动画持续时间，单位是毫秒。
+  create 配置创建新视图时的动画。
+  update 配置被更新的视图的动画。
+
+@param onAnimationDidEnd 当动画结束的时候被调用。只在iOS设备上支持。
+@param onError 当动画产生错误的时候被调用。只在iOS设备上支持。
+
+```
+config参数如下：
+```
+LayoutAnimation.configureNext({
+  duration: 200,
+  create: {
+      type: LayoutAnimation.Types.linear,
+      property: LayoutAnimation.Properties.opacity,
+  },
+  update: {
+      type: LayoutAnimation.Types.easeInEaseOut
+  }
+});
+```
+create、update的属性：
+```
+duration：动画持续时间（单位：毫秒）,会覆盖 config 中设置的 duration。
+delay：延迟指定时间（单位：毫秒）。
+springDamping：弹跳动画阻尼系数（配合 spring 使用）。
+initialVelocity：初始速度。
+
+type：类型定义在LayoutAnimation.Types中：
+  spring：弹跳
+  linear：线性
+  easeInEaseOut：缓入缓出
+  easeIn：缓入
+  easeOut：缓出
+
+property：类型定义在LayoutAnimation.Properties中：
+  opacity：透明度
+  scaleXY：缩放
+```
+#### 自定义动画效果
+LayoutAnimation.create(duration, type, Properties);
+```
+LayoutAnimation.configureNext(LayoutAnimation.create(
+  1000,
+  LayoutAnimation.Types.linear,
+  LayoutAnimation.Properties.scaleXY,
+));
+```
+#### 系统默认的动画
+定义在LayoutAnimation.Presets中，  
+- easeInEaseOut：缓入缓出
+- linear：线性
+- spring：弹性
+
 
 > *参考文章*
--  [动画API详解](https://www.jianshu.com/p/7fd37d8ed138)  
--  [动画原理](http://www.alloyteam.com/2016/01/reactnative-animated/)
+- [Animated动画API详解](https://www.jianshu.com/p/7fd37d8ed138)  
+- [LayoutAnimation动画API详解](https://www.jianshu.com/p/c7151be8d87f)  
+- [动画原理](http://www.alloyteam.com/2016/01/reactnative-animated/)

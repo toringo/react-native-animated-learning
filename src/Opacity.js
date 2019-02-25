@@ -1,10 +1,22 @@
 // @flow
 import React, { Component } from 'react';
-import { Animated, View, Text, Image, StyleSheet, Easing, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  Animated,
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Easing,
+  TouchableOpacity,
+  Dimensions,
+  NativeModules,
+  LayoutAnimation,
+  TextInput,
+} from 'react-native';
 
-const styles = StyleSheet.create({
+// const styles = StyleSheet.create({
 
-});
+// });
 
 const uri = 'http://pic17.nipic.com/20111021/8633866_210108284151_2.jpg';
 
@@ -385,130 +397,130 @@ const { width } = Dimensions.get('window');
 // }
 
 
-export default class AnimatedSequence extends Component {
-  constructor(props) {
-      super(props);
+// export default class AnimatedSequence extends Component {
+//   constructor(props) {
+//       super(props);
 
-      this.state = {
-          turnRotateValue: new Animated.Value(0),
-          turnShakeValue: new Animated.Value(0),
-          macValue: new Animated.Value(0),
-      };
+//       this.state = {
+//           turnRotateValue: new Animated.Value(0),
+//           turnShakeValue: new Animated.Value(0),
+//           macValue: new Animated.Value(0),
+//       };
 
-      this.sequenceAnimated = Animated.sequence(
-          [
-              Animated.timing(
-                  this.state.turnRotateValue,
-                  {
-                      toValue: 1,
-                      duration: 5000,
-                      easing: Easing.in,
-                      // useNativeDriver: true,
-                  }
-              ),
-              Animated.timing(
-                  this.state.turnShakeValue,
-                  {
-                      toValue: 1,
-                      duration: 500,
-                      easing: Easing.in,
-                      delay: 300,
-                      // useNativeDriver: true,
-                  }
-              ),
-              Animated.spring(
-                  this.state.macValue,
-                  {
-                      toValue: 1,
-                      friction: 3,
-                      tension: 10,
-                  }
-              ),
-          ]
-      );
-  }
+//       this.sequenceAnimated = Animated.sequence(
+//           [
+//               Animated.timing(
+//                   this.state.turnRotateValue,
+//                   {
+//                       toValue: 1,
+//                       duration: 5000,
+//                       easing: Easing.in,
+//                       // useNativeDriver: true,
+//                   }
+//               ),
+//               Animated.timing(
+//                   this.state.turnShakeValue,
+//                   {
+//                       toValue: 1,
+//                       duration: 500,
+//                       easing: Easing.in,
+//                       delay: 300,
+//                       // useNativeDriver: true,
+//                   }
+//               ),
+//               Animated.spring(
+//                   this.state.macValue,
+//                   {
+//                       toValue: 1,
+//                       friction: 3,
+//                       tension: 10,
+//                   }
+//               ),
+//           ]
+//       );
+//   }
 
-  _startAnimated() {
-      this.sequenceAnimated.start();
-  }
+//   _startAnimated() {
+//       this.sequenceAnimated.start();
+//   }
 
-  render() {
-      // 转盘旋转
-      const turnRotateZ = this.state.turnRotateValue.interpolate({
-          inputRange: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-          outputRange: [
-              '0deg',
-              '180deg',
-              '360deg',
-              '720deg',
-              '1080deg',
-              '1800deg',
-              '2520deg',
-              '3060deg',
-              '3420deg',
-              '3600deg',
-              '3690deg',
-          ],
-      });
+//   render() {
+//       // 转盘旋转
+//       const turnRotateZ = this.state.turnRotateValue.interpolate({
+//           inputRange: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+//           outputRange: [
+//               '0deg',
+//               '180deg',
+//               '360deg',
+//               '720deg',
+//               '1080deg',
+//               '1800deg',
+//               '2520deg',
+//               '3060deg',
+//               '3420deg',
+//               '3600deg',
+//               '3690deg',
+//           ],
+//       });
 
-      // 转盘震动
-      const marginLeft = this.state.turnShakeValue.interpolate({
-          inputRange: [0, 0.2, 0.4, 0.6, 0.8, 1],
-          outputRange: [0, -40, 40, -40, 40, 0],
-      });
+//       // 转盘震动
+//       const marginLeft = this.state.turnShakeValue.interpolate({
+//           inputRange: [0, 0.2, 0.4, 0.6, 0.8, 1],
+//           outputRange: [0, -40, 40, -40, 40, 0],
+//       });
 
-      // MacTop
-      const macTop = this.state.macValue.interpolate({
-          inputRange: [0, 1],
-          outputRange: [-200, 150],
-      });
+//       // MacTop
+//       const macTop = this.state.macValue.interpolate({
+//           inputRange: [0, 1],
+//           outputRange: [-200, 150],
+//       });
 
-      return (
-        <View style={styles.mainStyle}>
+//       return (
+//         <View style={styles.mainStyle}>
 
-          {/* // 转盘 */}
-          <Animated.View
-            style={{
-                      width: 300,
-                      height: 300,
-                      marginLeft,
-                      transform: [
-                          { rotateZ: turnRotateZ },
-                      ],
-                  }}
-          >
-            <Image
-              ref="image"
-              style={{ width: 300, height: 300 }}
-              source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551017189681&di=67c7bbe2f56b6b7c8dea0fedb043df83&imgtype=0&src=http%3A%2F%2Fpic57.nipic.com%2Ffile%2F20141230%2F20170631_135104414000_2.jpg' }}
-            />
-          </Animated.View>
+//           {/* // 转盘 */}
+//           <Animated.View
+//             style={{
+//                       width: 300,
+//                       height: 300,
+//                       marginLeft,
+//                       transform: [
+//                           { rotateZ: turnRotateZ },
+//                       ],
+//                   }}
+//           >
+//             <Image
+//               ref="image"
+//               style={{ width: 300, height: 300 }}
+//               source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551017189681&di=67c7bbe2f56b6b7c8dea0fedb043df83&imgtype=0&src=http%3A%2F%2Fpic57.nipic.com%2Ffile%2F20141230%2F20170631_135104414000_2.jpg' }}
+//             />
+//           </Animated.View>
 
-          {/* // mac */}
-          <Animated.View
-            style={{
-                      width: 300,
-                      height: 204,
-                      position: 'absolute',
-                      top: macTop,
-                      left: width / 2 - 150,
-                  }}
-          >
-            <Image
-              ref="image"
-              resizeMode="cover"
-              style={{ width: 300, height: 204 }}
-              source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551016981336&di=8b7bd9bf943826f5f30b204bfe856263&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F017034554b7cd2000001bf7286bbe1.jpg%401280w_1l_2o_100sh.jpg' }}
-            />
-          </Animated.View>
+//           {/* // mac */}
+//           <Animated.View
+//             style={{
+//                       width: 300,
+//                       height: 204,
+//                       position: 'absolute',
+//                       top: macTop,
+//                       left: width / 2 - 150,
+//                   }}
+//           >
+//             <Image
+//               ref="image"
+//               resizeMode="cover"
+//               style={{ width: 300, height: 204 }}
+//               source={{ uri: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551016981336&di=8b7bd9bf943826f5f30b204bfe856263&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F017034554b7cd2000001bf7286bbe1.jpg%401280w_1l_2o_100sh.jpg' }}
+//             />
+//           </Animated.View>
 
-          <TouchableOpacity style={styles.touchStyle} onPress={this._startAnimated.bind(this)}>
-            <Text style={{ width: 200, height: 100, textAlign: 'center', lineHeight: 100 }}>点击开始动画</Text>
-          </TouchableOpacity>
-        </View>
-      );
-  }
-}
+//           <TouchableOpacity style={styles.touchStyle} onPress={this._startAnimated.bind(this)}>
+//             <Text style={{ width: 200, height: 100, textAlign: 'center', lineHeight: 100 }}>点击开始动画</Text>
+//           </TouchableOpacity>
+//         </View>
+//       );
+//   }
+// }
 
 // export default class AnimatedStagger extends Component {
 //   constructor(props) {
@@ -589,3 +601,220 @@ export default class AnimatedSequence extends Component {
 //       );
 //   }
 // }
+
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental
+  && UIManager.setLayoutAnimationEnabledExperimental(true);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  box: {
+    width: 200,
+    height: 200,
+    backgroundColor: 'red',
+  },
+  button: {
+    backgroundColor: 'black',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    marginTop: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});
+
+// type Props = {};
+
+type State = {
+  w: number
+};
+
+
+// export default class App extends React.Component<Props, State> {
+//   state: State;
+
+//   props: Props;
+
+//   state = {
+//     w: 100,
+//     h: 100,
+//   };
+
+//   _onPress = () => {
+//     // Animate the update
+//     LayoutAnimation.spring();
+//     const { w } = this.state;
+//     this.setState({ w: w + 15, h: this.state.h + 15 });
+//   }
+
+//   render() {
+//     console.log('this.', this.state.w);
+//     return (
+//       <View style={styles.container}>
+//         <View style={[styles.box, { width: this.state.w, height: this.state.h }]} />
+//         <TouchableOpacity onPress={this._onPress}>
+//           <View style={styles.button}>
+//             <Text style={styles.buttonText}>Press me!</Text>
+//           </View>
+//         </TouchableOpacity>
+//       </View>
+//     );
+//   }
+// }
+
+// export default class App extends React.Component {
+//   clearText = () => {
+//     this._textInput.setNativeProps({ text: '' });
+//   }
+
+//   render() {
+//     return (
+//       <View style={{ flex: 1 }}>
+//         <TextInput
+//           ref={component => this._textInput = component}
+//           style={{ height: 50, flex: 1, marginHorizontal: 20, borderWidth: 1, borderColor: '#ccc' }}
+//         />
+//         <TouchableOpacity onPress={this.clearText}>
+//           <Text>Clear text</Text>
+//         </TouchableOpacity>
+//       </View>
+//     );
+//   }
+// }
+
+// const anima = {
+//   duration: 1000, // 持续时间
+//   create: {
+//       type: LayoutAnimation.Types.spring,
+//       property: LayoutAnimation.Properties.scaleXY,
+//   },
+//   update: {
+//       type: 'easeOut',
+//   },
+// };
+
+// export default class extends Component {
+//   constructor(props) {
+//       super(props);
+
+//       this.state = {
+//           width: 200,
+//           height: 100,
+//           left: 100,
+//           top: 20,
+//       };
+//   }
+
+//   _clickStartAnimation() {
+//       LayoutAnimation.configureNext(anima, () => {
+//           this.setState({
+//               top: 20,
+//           });
+//       });
+//       this.setState({
+//           top: this.state.top + 200,
+//       });
+//   }
+
+//   _setTimer() {
+//       // 先开始一次动画
+//       this._clickStartAnimation();
+//       // 创建定时器
+//       this.timer = setInterval(this._clickStartAnimation.bind(this), 1200);
+//   }
+
+//   render() {
+//       return (
+//         <View style={styles.mainStyle}>
+
+//           <Image
+//             style={{ width: this.state.width, height: this.state.height, position: 'absolute', left: this.state.left, top: this.state.top }}
+//             source={{ uri }}
+//           />
+
+//           <View style={{
+//                   width: 240,
+//                   height: 120,
+//                   position: 'absolute',
+//                   left: 80,
+//                   top: 200,
+//                   backgroundColor: 'red',
+//               }}
+//           >
+//             <Text style={{ color: '#FFD700', fontSize: 90, lineHeight: 104, width: 240, textAlign: 'center' }}>红包</Text>
+//           </View>
+
+//           <TouchableOpacity style={{ width: 200, height: 50, backgroundColor: 'yellow', marginTop: 40 }} onPress={this._setTimer.bind(this)}>
+//             <Text style={{ width: 200, height: 50, textAlign: 'center', lineHeight: 50 }}>点击开始动画</Text>
+//           </TouchableOpacity>
+//         </View>
+//       );
+//   }
+// }
+
+const anima = {
+  duration: 1000, // 持续时间
+  create: {
+      type: LayoutAnimation.Types.linear,
+      property: LayoutAnimation.Properties.scaleXY,
+  },
+  update: {
+      type: 'linear',
+  },
+};
+
+export default class extends Component {
+  constructor(props) {
+      super(props);
+
+      this.state = {
+          width: 250,
+          height: 125,
+          show: false,
+      };
+  }
+
+  _clickStartAnimation() {
+      // LayoutAnimation.configureNext(anima, () => {});
+      // LayoutAnimation.configureNext(LayoutAnimation.create(
+      //   1000,
+      //   LayoutAnimation.Types.linear,
+      //   LayoutAnimation.Properties.scaleXY,
+      // ));
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+      this.setState({
+          show: true,
+      });
+  }
+
+  render() {
+      const secondMoney = this.state.show ? (
+        <Image
+          style={{ width: this.state.width, height: this.state.height }}
+          source={{ uri }}
+        />
+      ) : null;
+
+      return (
+        <View style={styles.mainStyle}>
+
+          <Image
+            style={{ width: this.state.width, height: this.state.height }}
+            source={{ uri }}
+          />
+
+          {secondMoney}
+
+          <TouchableOpacity style={{ width: 200, height: 50, backgroundColor: 'yellow', marginTop: 40 }} onPress={this._clickStartAnimation.bind(this)}>
+            <Text style={{ width: 200, height: 50, textAlign: 'center', lineHeight: 50 }}>魔法现金</Text>
+          </TouchableOpacity>
+        </View>
+      );
+  }
+}
