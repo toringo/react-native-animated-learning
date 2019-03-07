@@ -13,6 +13,7 @@ import {
   LayoutAnimation,
   TextInput,
 } from 'react-native';
+import ButtonBack from '../ButtonBack';
 
 // const styles = StyleSheet.create({
 
@@ -803,7 +804,7 @@ export default class extends Component {
 
       return (
         <View style={styles.mainStyle}>
-
+          <ButtonBack onPress={() => this.props.navigation.navigate('Main')} />
           <Image
             style={{ width: this.state.width, height: this.state.height }}
             source={{ uri }}

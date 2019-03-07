@@ -1,12 +1,8 @@
 /* @flow */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-
-import AppNavigator from './src';
-
-console.disableYellowBox = true; // eslint-disable-line
-
+import { StyleSheet, Text, View, SwipeableFlatList, TouchableHighlight, Button } from 'react-native';
+import ButtonBack from './ButtonBack';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,11 +10,12 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     backgroundColor: '#fff',
+    marginTop: 50,
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    marginTop: 50,
+    margin: 10,
   },
   instructions: {
     textAlign: 'center',
@@ -64,10 +61,26 @@ const styles = StyleSheet.create({
 
 type Props = {};
 
-export default class App extends Component<Props> {
+export default class Main extends Component<Props> {
   render() {
+    console.log('this.props', this.props);
     return (
-      <AppNavigator />
+      <View style={styles.container}>
+        <ButtonBack {...this.props} />
+        <Button
+          onPress={() => this.props.navigation.navigate('Animate')}
+          title="Animate"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('Swiper')}
+          title="SwiperFlatlist"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('StatusGradient')}
+          title="StatusGradient"
+        />
+
+      </View>
     );
   }
 }
