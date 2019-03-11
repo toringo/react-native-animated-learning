@@ -1,19 +1,34 @@
 import React, { PureComponent } from 'react';
-import { View, Button, Platform, Animated } from 'react-native';
+import { View, Button, Platform } from 'react-native';
 import { createStackNavigator, createAppContainer, SafeAreaView } from 'react-navigation';
-import Opacity from './Opacity';
-// import LayoutAnimation from './LayoutAnimation';
-// import LayoutAnimationRepeat from './LayoutAnimationRepeat';
 
+import Animated from './Animated';
+import LayoutAnimation from './LayoutAnimated';
+import LayoutAnimationRepeat from './LayoutAnimationRepeat';
+import LayoutAnimationSpring from './LayoutAnimation.spring';
+import AnimatedStagger from './Animated.stagger';
+import AnimatedSequence from './Animated.sequence';
+
+import AnimatedParallel from './Animated.parallel';
+import AnimatedDecay from './Animated.decay';
+import AnimatedSpring from './Animated.spring';
+import MainAnimated from './Main';
 
 const AppNavigators = createStackNavigator(
     {
-      Opacity,
-      // LayoutAnimation,
-      // LayoutAnimationRepeat,
+      Animated,
+      LayoutAnimation,
+      LayoutAnimationRepeat,
+      LayoutAnimationSpring,
+      AnimatedStagger,
+      AnimatedSequence,
+      AnimatedParallel,
+      AnimatedDecay,
+      AnimatedSpring,
+      MainAnimated,
     },
     {
-      initialRouteName: 'Opacity',
+      initialRouteName: 'MainAnimated',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,

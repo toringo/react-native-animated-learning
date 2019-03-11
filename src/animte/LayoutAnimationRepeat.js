@@ -689,84 +689,14 @@ type State = {
 //   }
 // }
 
-// const anima = {
-//   duration: 1000, // 持续时间
-//   create: {
-//       type: LayoutAnimation.Types.spring,
-//       property: LayoutAnimation.Properties.scaleXY,
-//   },
-//   update: {
-//       type: 'easeOut',
-//   },
-// };
-
-// export default class extends Component {
-//   constructor(props) {
-//       super(props);
-
-//       this.state = {
-//           width: 200,
-//           height: 100,
-//           left: 100,
-//           top: 20,
-//       };
-//   }
-
-//   _clickStartAnimation() {
-//       LayoutAnimation.configureNext(anima, () => {
-//           this.setState({
-//               top: 20,
-//           });
-//       });
-//       this.setState({
-//           top: this.state.top + 200,
-//       });
-//   }
-
-//   _setTimer() {
-//       // 先开始一次动画
-//       this._clickStartAnimation();
-//       // 创建定时器
-//       this.timer = setInterval(this._clickStartAnimation.bind(this), 1200);
-//   }
-
-//   render() {
-//       return (
-//         <View style={styles.mainStyle}>
-
-//           <Image
-//             style={{ width: this.state.width, height: this.state.height, position: 'absolute', left: this.state.left, top: this.state.top }}
-//             source={{ uri }}
-//           />
-
-//           <View style={{
-//                   width: 240,
-//                   height: 120,
-//                   position: 'absolute',
-//                   left: 80,
-//                   top: 200,
-//                   backgroundColor: 'red',
-//               }}
-//           >
-//             <Text style={{ color: '#FFD700', fontSize: 90, lineHeight: 104, width: 240, textAlign: 'center' }}>红包</Text>
-//           </View>
-
-//           <TouchableOpacity style={{ width: 200, height: 50, backgroundColor: 'yellow', marginTop: 40 }} onPress={this._setTimer.bind(this)}>
-//             <Text style={{ width: 200, height: 50, textAlign: 'center', lineHeight: 50 }}>点击开始动画</Text>
-//           </TouchableOpacity>
-//         </View>
-//       );
-//   }
-// }
-
 const anima = {
   duration: 1000, // 持续时间
   create: {
-      type: LayoutAnimation.Types.linear,
+      type: LayoutAnimation.Types.spring,
       property: LayoutAnimation.Properties.scaleXY,
   },
   update: {
-      type: 'linear',
+      type: 'easeOut',
   },
 };
 
@@ -775,45 +705,54 @@ export default class extends Component {
       super(props);
 
       this.state = {
-          width: 250,
-          height: 125,
-          show: false,
+          width: 200,
+          height: 100,
+          left: 100,
+          top: 20,
       };
   }
 
   _clickStartAnimation() {
-      // LayoutAnimation.configureNext(anima, () => {});
-      // LayoutAnimation.configureNext(LayoutAnimation.create(
-      //   1000,
-      //   LayoutAnimation.Types.linear,
-      //   LayoutAnimation.Properties.scaleXY,
-      // ));
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
+      LayoutAnimation.configureNext(anima, () => {
+          this.setState({
+              top: 20,
+          });
+      });
       this.setState({
-          show: true,
+          top: this.state.top + 200,
       });
   }
 
-  render() {
-      const secondMoney = this.state.show ? (
-        <Image
-          style={{ width: this.state.width, height: this.state.height }}
-          source={{ uri }}
-        />
-      ) : null;
+  _setTimer() {
+      // 先开始一次动画
+      this._clickStartAnimation();
+      // 创建定时器
+      this.timer = setInterval(this._clickStartAnimation.bind(this), 1200);
+  }
 
+  render() {
       return (
         <View style={styles.mainStyle}>
-          <ButtonBack onPress={() => this.props.navigation.navigate('Main')} />
+
           <Image
-            style={{ width: this.state.width, height: this.state.height }}
+            style={{ width: this.state.width, height: this.state.height, position: 'absolute', left: this.state.left, top: this.state.top }}
             source={{ uri }}
           />
 
-          {secondMoney}
+          <View style={{
+                  width: 240,
+                  height: 120,
+                  position: 'absolute',
+                  left: 80,
+                  top: 200,
+                  backgroundColor: 'red',
+              }}
+          >
+            <Text style={{ color: '#FFD700', fontSize: 90, lineHeight: 104, width: 240, textAlign: 'center' }}>红包</Text>
+          </View>
 
-          <TouchableOpacity style={{ width: 200, height: 50, backgroundColor: 'yellow', marginTop: 40 }} onPress={this._clickStartAnimation.bind(this)}>
-            <Text style={{ width: 200, height: 50, textAlign: 'center', lineHeight: 50 }}>魔法现金</Text>
+          <TouchableOpacity style={{ width: 200, height: 50, backgroundColor: 'yellow', marginTop: 40 }} onPress={this._setTimer.bind(this)}>
+            <Text style={{ width: 200, height: 50, textAlign: 'center', lineHeight: 50 }}>点击开始动画</Text>
           </TouchableOpacity>
         </View>
       );

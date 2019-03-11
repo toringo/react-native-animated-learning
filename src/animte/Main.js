@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, SwipeableFlatList, TouchableHighlight, Button } from 'react-native';
-import ButtonBack from './ButtonBack';
+import ButtonBack from '../ButtonBack';
 
 const styles = StyleSheet.create({
   container: {
@@ -66,10 +66,40 @@ export default class Main extends Component<Props> {
     console.log('this.props', this.props);
     return (
       <View style={styles.container}>
-        {/* <ButtonBack {...this.props} /> */}
+        <ButtonBack onPress={() => this.props.navigation.navigate('Main')} />
         <Button
-          onPress={() => this.props.navigation.navigate('Animate')}
-          title="Animate"
+          onPress={() => this.props.navigation.navigate('Animated')}
+          title="Animated"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('AnimatedSpring')}
+          title="Animated.spring"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('AnimatedDecay')}
+          title="Animated.decay"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('AnimatedParallel')}
+          title="Animated.parallel"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('AnimatedStagger')}
+          title="Animated.stagger"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('AnimatedSequence')}
+          title="Animated.sequence"
+        />
+
+
+        <Button
+          onPress={() => this.props.navigation.navigate('LayoutAnimationSpring')}
+          title="LayoutAnimationSpring"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('LayoutAnimationRepeat')}
+          title="LayoutAnimationRepeat"
         />
         <Button
           onPress={() => this.props.navigation.navigate('Swiper')}
