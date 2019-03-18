@@ -52,6 +52,8 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
       scale: new Animated.Value(1),
     };
 
+    this.arrow = true;
+
     // 手势响应系统
     this.gestureHandlers = {
 			onStartShouldSetResponder: () => true,
@@ -61,21 +63,28 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
 				console.log('onResponderStart');
       },
       // 点击响应
-			onResponderGrant: () => {
-        console.log('onResponderGrant', this.state.height);
+			onResponderGrant: (e) => {
+        console.log('onResponderGrant', e.nativeEvent);
         // this.setState({ bg: '#527FF6' });
         // this.state.height.setOffset(this.state.height._value);
-        // this.state.height.setValue(this.state.height._value);
+        this.prePageY = e.nativeEvent.pageY;
+        this.state.height.setValue(this.state.height._value);
         Animated.spring(this.state.scale, {
-            toValue: 1.3,
+            toValue: 1.1,
             friction: 3 }
         ).start();
       },
       // 手势移动
 			onResponderMove: (e, gestureState) => {
-        console.log('onResponderMove', e.nativeEvent.pageY, height);
+        console.log('onResponderMove', e.nativeEvent, gestureState);
         // Animated.event(null, [{ nativeEvent: { pageY: this.state.height } }]);
         // this.state.height.setOffset(height - e.nativeEvent.pageY);
+        
+        if (e.nativeEvent.pageY > this.prePageY) {
+          this.arrow = false;
+        } else {
+          this.arrow = true;
+        }
         if (e.nativeEvent.pageY > 100) {
           this.state.height.setValue(height - e.nativeEvent.pageY);
         }
@@ -90,7 +99,15 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         this.state.height.flattenOffset();
 				console.log('onResponderRelease');
         this.setState({ bg: '#E0ECFE' });
-        this.state.height.setValue(height);
+        if (this.arrow) {
+          this.state.height.setValue(height);
+        } else {
+          this.state.height.setValue(100);
+        }
+        Animated.spring(
+          this.state.scale,
+          { toValue: 1, friction: 3 }
+        ).start();
 			},
 			onResponderTerminationRequest: () => {
 				console.log('onResponderTerminationRequest');
