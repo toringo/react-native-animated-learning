@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { View, Button, Platform } from 'react-native';
+import { View, Easing, Platform, Animated } from 'react-native';
 import { createStackNavigator, createAppContainer, SafeAreaView } from 'react-navigation';
+import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator';
 
-import Animated from './Animated';
+import Animateds from './Animated';
 import LayoutAnimation from './LayoutAnimated';
 import LayoutAnimationRepeat from './LayoutAnimationRepeat';
 import LayoutAnimationSpring from './LayoutAnimation.spring';
@@ -13,10 +14,12 @@ import AnimatedParallel from './Animated.parallel';
 import AnimatedDecay from './Animated.decay';
 import AnimatedSpring from './Animated.spring';
 import MainAnimated from './Main';
+import PanResponderAnimated from './BottomResponseHeightAnimated';
+import BottomPanResponseHeightAnimated from './BottomPanResponseHeightAnimated';
 
 const AppNavigators = createStackNavigator(
     {
-      Animated,
+      Animated: Animateds,
       LayoutAnimation,
       LayoutAnimationRepeat,
       LayoutAnimationSpring,
@@ -26,6 +29,8 @@ const AppNavigators = createStackNavigator(
       AnimatedDecay,
       AnimatedSpring,
       MainAnimated,
+      PanResponderAnimated,
+      BottomPanResponseHeightAnimated,
     },
     {
       initialRouteName: 'MainAnimated',
@@ -39,6 +44,14 @@ const AppNavigators = createStackNavigator(
         header: null,
         // gesturesEnabled: true,
         gesturesEnabled: Platform.OS === 'ios',
+      }),
+      transitionConfig: () => ({
+        transitionSpec: {
+          duration: 210,
+          easing: Easing.out(Easing.poly(4)),
+          timing: Animated.timing,
+        },
+        screenInterpolator: (sceneProps) => StackViewStyleInterpolator.forFade(sceneProps),
       }),
     }
   );

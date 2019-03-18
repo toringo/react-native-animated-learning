@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, Button, Platform, Animated } from 'react-native';
+import { View, Easing, Platform, Animated } from 'react-native';
 import { createStackNavigator, createAppContainer, SafeAreaView } from 'react-navigation';
+import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator';
+
 import {
   NativeViewGestureHandler,
 } from 'react-native-gesture-handler';
@@ -8,6 +10,8 @@ import Animate from './animte';
 import Swiper from './Swiperflatlist';
 import Main from './Main';
 import StatusGradient from './StatusGradient';
+import BottomPanResponseHeightAnimated from './animte/BottomPanResponseHeightAnimated';
+import BottomResponseHeightAnimated from './animte/BottomResponseHeightAnimated';
 
 
 const AppNavigators = createAppContainer(
@@ -23,9 +27,11 @@ const AppNavigators = createAppContainer(
         screen: Main,
       },
       StatusGradient,
+      BottomPanResponseHeightAnimated,
+      BottomResponseHeightAnimated,
     },
     {
-      initialRouteName: 'Main',
+      initialRouteName: 'BottomResponseHeightAnimated',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,
@@ -36,6 +42,14 @@ const AppNavigators = createAppContainer(
         header: null,
         // gesturesEnabled: true,
         gesturesEnabled: Platform.OS === 'ios',
+      }),
+      transitionConfig: () => ({
+        transitionSpec: {
+          duration: 210,
+          easing: Easing.out(Easing.poly(4)),
+          timing: Animated.timing,
+        },
+        screenInterpolator: (sceneProps) => StackViewStyleInterpolator.forHorizontal(sceneProps),
       }),
     }
   )

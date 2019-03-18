@@ -733,6 +733,7 @@ export default class extends Component {
   render() {
       return (
         <View style={styles.mainStyle}>
+          <ButtonBack onPress={() => this.props.navigation.goBack()} />
 
           <Image
             style={{ width: this.state.width, height: this.state.height, position: 'absolute', left: this.state.left, top: this.state.top }}

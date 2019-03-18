@@ -63,7 +63,7 @@ type Props = {};
 
 export default class Main extends Component<Props> {
   render() {
-    console.log('this.props', this.props);
+    // console.log('this.props', this.props);
     return (
       <View style={styles.container}>
         <ButtonBack onPress={() => this.props.navigation.navigate('Main')} />
@@ -108,6 +108,17 @@ export default class Main extends Component<Props> {
         <Button
           onPress={() => this.props.navigation.navigate('StatusGradient')}
           title="StatusGradient"
+        />
+
+
+        <Button
+          onPress={() => this.props.navigation.navigate('PanResponderAnimated')}
+          title="PanResponderAnimated"
+        />
+
+        <Button
+          onPress={() => this.props.navigation.navigate('BottomPanResponseHeightAnimated')}
+          title="BottomPanResponseHeightAnimated"
         />
 
 
