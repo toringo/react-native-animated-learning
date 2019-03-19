@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { View, Text, Animated, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Animated, Dimensions, StyleSheet, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import ButtonBack from '../ButtonBack';
@@ -52,7 +52,7 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
       scale: new Animated.Value(1),
     };
 
-    this.arrow = true;
+    this.arrow = 0;
 
     // 手势响应系统
     this.gestureHandlers = {
@@ -76,14 +76,15 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
       },
       // 手势移动
 			onResponderMove: (e, gestureState) => {
-        console.log('onResponderMove', e.nativeEvent, gestureState);
+        console.log('onResponderMove', e.nativeEvent, e.nativeEvent.pageY - this.prePageY);
         // Animated.event(null, [{ nativeEvent: { pageY: this.state.height } }]);
         // this.state.height.setOffset(height - e.nativeEvent.pageY);
-        
-        if (e.nativeEvent.pageY > this.prePageY) {
-          this.arrow = false;
-        } else {
-          this.arrow = true;
+
+        if (e.nativeEvent.pageY - this.prePageY > 50) {
+          this.arrow = 1;
+        }
+        if (e.nativeEvent.pageY - this.prePageY < 50) {
+          this.arrow = 2;
         }
         if (e.nativeEvent.pageY > 100) {
           this.state.height.setValue(height - e.nativeEvent.pageY);
@@ -99,11 +100,13 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         this.state.height.flattenOffset();
 				console.log('onResponderRelease');
         this.setState({ bg: '#E0ECFE' });
-        if (this.arrow) {
+        if (this.arrow === 2) {
           this.state.height.setValue(height);
-        } else {
+        }
+        if (this.arrow === 1) {
           this.state.height.setValue(100);
         }
+        this.arrow = 0;
         Animated.spring(
           this.state.scale,
           { toValue: 1, friction: 3 }
@@ -123,8 +126,8 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
        * onMoveShouldSetResponderCapture 触摸移动事件（touchMove）询问容器组件是否劫持
        * 流程图参考 https://img.race604.com/7-3-touch-event-handle.jpg
        */
-      onStartShouldSetResponderCapture: (evt) => true,
-      onMoveShouldSetResponderCapture: (evt) => true,
+      // onStartShouldSetResponderCapture: (evt) => true,
+      // onMoveShouldSetResponderCapture: (evt) => true,
       // 在组件成为事件响应者期间，其他组件也可能会申请触摸事件处理。此时 RN 会通过回调询问你是否可以释放响应者角色让给其他组件
     };
 
@@ -165,6 +168,14 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
   render() {
     const { scale, bg } = this.state;
     const viewStyle = { transform: [{ scale }], height: this.state.height, backgroundColor: bg };
+    const childrenHeight = this.state.height.interpolate({
+      inputRange: [0, height],
+      outputRange: [60, 0],
+    });
+    const opacity = this.state.height.interpolate({
+      inputRange: [0, height],
+      outputRange: [1, 0],
+    });
     return (
       <View style={styles.wrap}>
         <ButtonBack onPress={() => this.props.navigation.goBack()} />
@@ -193,12 +204,18 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         </ScrollView>
         <Animated.View style={[styles.bottom, viewStyle]} {...this.gestureHandlers}>
           <Text>父组件</Text>
-          <View
-            style={[styles.sonview, { backgroundColor: this.state.bg2 }]}
+          <Animated.View
+            style={[styles.sonview, { backgroundColor: this.state.bg2, height: childrenHeight, opacity }]}
             {...this.gestureHandlers2}
           >
-            <Text style={styles.text}>子组件</Text>
-          </View>
+
+            <TouchableHighlight
+              underlayColor="transparent"
+              onPress={() => alert('子组件')}
+            >
+              <Text style={styles.text}>子组件</Text>
+            </TouchableHighlight>
+          </Animated.View>
         </Animated.View>
       </View>
     );

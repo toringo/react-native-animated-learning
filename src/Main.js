@@ -80,6 +80,11 @@ export default class Main extends Component<Props> {
           title="StatusGradient"
         />
 
+        <Button
+          onPress={() => this.props.navigation.navigate('MultipleScrollView')}
+          title="MultipleScrollView"
+        />
+
 
       </View>
     );

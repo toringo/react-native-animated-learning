@@ -13,6 +13,8 @@ import StatusGradient from './StatusGradient';
 import BottomPanResponseHeightAnimated from './animte/BottomPanResponseHeightAnimated';
 import BottomResponseHeightAnimated from './animte/BottomResponseHeightAnimated';
 
+import MultipleScrollView from './MultipleScrollView';
+
 
 const AppNavigators = createAppContainer(
   createStackNavigator(
@@ -29,9 +31,10 @@ const AppNavigators = createAppContainer(
       StatusGradient,
       BottomPanResponseHeightAnimated,
       BottomResponseHeightAnimated,
+      MultipleScrollView,
     },
     {
-      initialRouteName: 'BottomResponseHeightAnimated',
+      initialRouteName: 'Main',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,
