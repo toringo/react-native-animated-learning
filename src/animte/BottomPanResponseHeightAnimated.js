@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { View, Text, Animated, PanResponder, TouchableHighlight, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, Image, Animated, PanResponder, TouchableHighlight, StyleSheet, Dimensions, ScrollView, UIManager, Modal, findNodeHandle } from 'react-native';
 // import { ScrollView } from 'react-native-gesture-handler';
 
 import ButtonBack from '../ButtonBack';
@@ -26,10 +26,11 @@ const styles = StyleSheet.create({
     marginBottom: 70,
   },
   scrollText: {
-    paddingVertical: 20,
-    textAlign: 'center',
-    marginVertical: 10,
+    flex: 1,
     backgroundColor: '#fff',
+    margin: 15,
+    borderRadius: 6,
+    overflow: 'hidden',
   },
   sonview: {
 		width: 50,
@@ -37,13 +38,68 @@ const styles = StyleSheet.create({
 		backgroundColor: '#33AECC',
 		alignSelf: 'center',
 		marginTop: 20,
-	},
+  },
+  text: {
+    fontSize: 18,
+    color: '#333',
+    textAlign: 'center',
+    padding: 15,
+    lineHeight: 30,
+  },
+  modalScrollview: {
+    // padding: 15,
+  },
+  popupLayer: {
+    position: 'relative',
+    overflow: 'hidden',
+    backgroundColor: '#FFF',
+  },
+  closeContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#666',
+  },
+  forkLine: {
+    width: 10,
+    height: 1,
+    backgroundColor: '#FFF',
+  },
 });
 
-const { height } = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 
 export default class BottomPanResponseHeightAnimated extends PureComponent {
+  static defaultProps = {
+    data: [
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+      'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553096595396&di=4cd6468be5a74c9ad5973307d8ab7384&imgtype=0&src=http%3A%2F%2Fit.southcn.com%2F9%2Fimages%2Fattachement%2Fjpg%2Fsite4%2F20100201%2F00105cd47d460cd0db0d02.jpg',
+    ],
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -51,7 +107,15 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
       bg2: '#FCB15F',
       height: new Animated.Value(100),
       scale: new Animated.Value(1),
+      showPopupLayer: false,
+      selectedIndex: 0,
     };
+    this.cardRefs = [];
+    this.popupAnimatedValue = new Animated.Value(0);
+    this.closeAnimatedValue = new Animated.Value(0);
+    this.bannerImageAnimatedValue = new Animated.Value(0);
+    this.popupLayerStyle = {};
+    this.bannerImageStyle = {};
   }
 
   // PanResponder提供的API和手势响应系统API一一对应
@@ -154,6 +218,114 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
     },
   });
 
+  onPress = (index) => {
+    console.log('onpress', index);
+    UIManager.measure(findNodeHandle(this.cardRefs[index]), (x, y, width_, height_, pageX, pageY) => {
+      console.log('UIManager.measure', x, y, width_, height_, pageX, pageY);
+      // 生成浮层样式
+      this.popupLayerStyle = {
+        top: this.popupAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [pageY, 0],
+        }),
+        left: this.popupAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [pageX, 0],
+        }),
+        width: this.popupAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [width_, width],
+        }),
+        height: this.popupAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [height_, height],
+        }),
+      };
+      this.closeStyle = {
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: 44,
+        right: 20,
+        opacity: this.closeAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1],
+        }),
+      };
+      this.bannerImageStyle = {
+        width: this.bannerImageAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [width_, width],
+        }),
+        height: this.bannerImageAnimatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [height_, width * height_ / width_],
+        }),
+      };
+      // 设置浮层可见，然后开启展开浮层动画
+      this.setState({ selectedIndex: index, showPopupLayer: true }, () => {
+        Animated.parallel([
+          Animated.timing(this.closeAnimatedValue, { toValue: 1 }),
+          Animated.spring(this.popupAnimatedValue, { toValue: 1, friction: 6 }).start(),
+          Animated.spring(this.bannerImageAnimatedValue, { toValue: 1, friction: 6 }),
+        ]).start();
+      });
+    });
+  }
+
+  onRequestClose = () => {
+
+  }
+
+  renderModal() {
+    const { data } = this.props;
+    const { selectedIndex, showPopupLayer } = this.state;
+    return (
+      <Modal
+        transparent
+        visible={showPopupLayer}
+        onRequestClose={this.onRequestClose}
+      >
+        {/* <Text>就的刷卡缴费加快速度</Text> */}
+        {showPopupLayer && (
+          <Animated.View style={[styles.popupLayer, this.popupLayerStyle]}>
+            {this.renderModalContent(data[selectedIndex], selectedIndex)}
+          </Animated.View>
+        )}
+      </Modal>
+    );
+  }
+
+  renderModalContent = (item, index) => (
+    <ScrollView bounces={false} style={styles.modalScrollview}>
+      <Animated.Image source={{ uri: item }} style={this.bannerImageStyle} />
+      <Text style={styles.text}>海内存知己，天涯若比邻,海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻,海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻</Text>
+      {this.renderClose()}
+    </ScrollView>
+    )
+
+  // 关闭按钮
+  renderClose = () => (
+    <Animated.View style={this.closeStyle}>
+      <TouchableHighlight underlayColor="transparent" style={styles.closeContainer} onPress={this.onPressClose}>
+        <View>
+          <View style={[styles.forkLine, { top: +0.5, transform: [{ rotateZ: '45deg' }] }]} />
+          <View style={[styles.forkLine, { top: -0.5, transform: [{ rotateZ: '-45deg' }] }]} />
+        </View>
+      </TouchableHighlight>
+    </Animated.View>
+    );
+
+  onPressClose = () => {
+    Animated.parallel([
+      Animated.timing(this.closeAnimatedValue, { toValue: 0 }),
+      Animated.timing(this.popupAnimatedValue, { toValue: 0 }),
+      Animated.timing(this.bannerImageAnimatedValue, { toValue: 0 }),
+    ]).start(() => {
+      this.setState({ showPopupLayer: false });
+    });
+  };
+
   render() {
     const transform = [{ scale: this.state.scale }];
     const childrenHeight = this.state.height.interpolate({
@@ -167,28 +339,18 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
     return (
       <View style={styles.wrap}>
         <ButtonBack onPress={() => this.props.navigation.goBack()} />
+        {this.renderModal()}
         <ScrollView style={styles.scroll}>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-          <Text style={styles.scrollText}>ScrollView</Text>
-
+          {
+          this.props.data.map((item, index) => (
+            <TouchableHighlight key={`${item}-${index}`} underlayColor="transparent" ref={component => { this.cardRefs[index] = component; }} onPress={() => this.onPress(index)}>
+              <View style={styles.scrollText}>
+                <Image style={{ height: 150 }} source={{ uri: item }} />
+                <Text style={styles.text}>海内存知己，天涯若比邻</Text>
+              </View>
+            </TouchableHighlight>
+        ))
+        }
         </ScrollView>
         <Animated.View
           style={[styles.bottom, { height: this.state.height, backgroundColor: this.state.bg, transform }]}
@@ -201,9 +363,9 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
           >
             <TouchableHighlight
               underlayColor="transparent"
-              onPress={() => alert('子组件')}
+              onPress={() => alert('子组件激活')}
             >
-              <Text style={styles.text}>子组件</Text>
+              <Text>子组件</Text>
             </TouchableHighlight>
           </Animated.View>
         </Animated.View>
