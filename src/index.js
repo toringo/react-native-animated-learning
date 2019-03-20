@@ -34,7 +34,7 @@ const AppNavigators = createAppContainer(
       MultipleScrollView,
     },
     {
-      initialRouteName: 'Main',
+      initialRouteName: 'BottomPanResponseHeightAnimated',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,

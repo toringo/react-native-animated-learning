@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
+import ButtonBack from './ButtonBack';
 
 export default class App extends Component {
   constructor() {
@@ -12,11 +13,15 @@ export default class App extends Component {
   render() {
   return (
     <ScrollView scrollEnabled={this.state.enabled}>
-      <View style={{ height: 600, backgroundColor: '#527FF6' }} />
+      <ButtonBack onPress={() => this.props.navigation.goBack()} />
+      <View style={{ height: 300, backgroundColor: '#527FF6' }} />
       <View style={{ height: 2000, backgroundColor: '#E0ECFE' }}>
         <ScrollView
+          // 按下屏幕时触发
           onTouchStart={(ev) => { this.setState({ enabled: false }); }}
+          // 滚动动画结束调用
           onMomentumScrollEnd={(e) => { this.setState({ enabled: true }); }}
+          // 当用户停止拖动此视图时调用此函数。
           onScrollEndDrag={(e) => { this.setState({ enabled: true }); }}
           style={{ margin: 10, maxHeight: 200 }}
         >

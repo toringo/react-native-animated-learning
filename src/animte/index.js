@@ -14,8 +14,9 @@ import AnimatedParallel from './Animated.parallel';
 import AnimatedDecay from './Animated.decay';
 import AnimatedSpring from './Animated.spring';
 import MainAnimated from './Main';
-import PanResponderAnimated from './BottomResponseHeightAnimated';
+import BottomResponseHeightAnimated from './BottomResponseHeightAnimated';
 import BottomPanResponseHeightAnimated from './BottomPanResponseHeightAnimated';
+import PanResponderAnimated from './PanResponderAnimated';
 
 const AppNavigators = createStackNavigator(
     {
@@ -31,6 +32,7 @@ const AppNavigators = createStackNavigator(
       MainAnimated,
       PanResponderAnimated,
       BottomPanResponseHeightAnimated,
+      BottomResponseHeightAnimated,
     },
     {
       initialRouteName: 'MainAnimated',

@@ -37,6 +37,14 @@ const styles = StyleSheet.create({
 		backgroundColor: '#33AECC',
 		alignSelf: 'center',
 		marginTop: 20,
+  },
+  sonview2: {
+		width: 60,
+    height: 0,
+    opacity: 0,
+		backgroundColor: '#33AECC',
+		alignSelf: 'center',
+		marginTop: 20,
 	},
 });
 
@@ -83,10 +91,10 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         if (e.nativeEvent.pageY - this.prePageY > 50) {
           this.arrow = 1;
         }
-        if (e.nativeEvent.pageY - this.prePageY < 50) {
+        if (e.nativeEvent.pageY - this.prePageY < 50 && e.nativeEvent.pageY - this.prePageY !== 0) {
           this.arrow = 2;
         }
-        if (e.nativeEvent.pageY > 100) {
+        if (e.nativeEvent.pageY - this.prePageY !== 0 && e.nativeEvent.pageY > 100) {
           this.state.height.setValue(height - e.nativeEvent.pageY);
         }
       },
@@ -118,7 +126,7 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
 			},
 			onResponderTerminate: (evt) => {
         console.log('onResponderTerminate');
-        this.setState({ bg2: '#E0ECFE' });
+        this.setState({ bg2: '#33AECC' });
       },
       /**
        * RN默认使用冒泡机制， 所以先从最深的子组件响应， RN提供劫持机制， 在触摸事件向下传递时， 先询问父组件， 不给子组件传递事件，
@@ -176,6 +184,14 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
       inputRange: [0, height],
       outputRange: [1, 0],
     });
+    const childrenHeight2 = this.state.height.interpolate({
+      inputRange: [0, height],
+      outputRange: [0, 60],
+    });
+    const opacity2 = this.state.height.interpolate({
+      inputRange: [0, height],
+      outputRange: [0, 1],
+    });
     return (
       <View style={styles.wrap}>
         <ButtonBack onPress={() => this.props.navigation.goBack()} />
@@ -206,7 +222,7 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
           <Text>父组件</Text>
           <Animated.View
             style={[styles.sonview, { backgroundColor: this.state.bg2, height: childrenHeight, opacity }]}
-            {...this.gestureHandlers2}
+            // {...this.gestureHandlers2}
           >
 
             <TouchableHighlight
@@ -216,6 +232,13 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
               <Text style={styles.text}>子组件</Text>
             </TouchableHighlight>
           </Animated.View>
+          <Animated.View
+            style={[styles.sonview2, { backgroundColor: this.state.bg2, height: childrenHeight2, opacity: opacity2 }]}
+            {...this.gestureHandlers2}
+          >
+            <Text style={styles.text}>子组件2</Text>
+          </Animated.View>
+
         </Animated.View>
       </View>
     );
