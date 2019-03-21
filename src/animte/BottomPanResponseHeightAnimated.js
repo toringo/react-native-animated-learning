@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   },
   popupLayer: {
     position: 'relative',
+    zIndex: 0,
     overflow: 'hidden',
     backgroundColor: '#FFF',
   },
@@ -66,6 +67,14 @@ const styles = StyleSheet.create({
     width: 10,
     height: 1,
     backgroundColor: '#FFF',
+  },
+  closeStyle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 44,
+    right: 20,
+    zIndex: 1,
   },
 });
 
@@ -222,6 +231,7 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
     console.log('onpress', index);
     UIManager.measure(findNodeHandle(this.cardRefs[index]), (x, y, width_, height_, pageX, pageY) => {
       console.log('UIManager.measure', x, y, width_, height_, pageX, pageY);
+      // alert(height_);
       // 生成浮层样式
       this.popupLayerStyle = {
         top: this.popupAnimatedValue.interpolate({
@@ -242,11 +252,6 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         }),
       };
       this.closeStyle = {
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: 44,
-        right: 20,
         opacity: this.closeAnimatedValue.interpolate({
           inputRange: [0, 1],
           outputRange: [0, 1],
@@ -266,7 +271,7 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
       this.setState({ selectedIndex: index, showPopupLayer: true }, () => {
         Animated.parallel([
           Animated.timing(this.closeAnimatedValue, { toValue: 1 }),
-          Animated.spring(this.popupAnimatedValue, { toValue: 1, friction: 6 }).start(),
+          Animated.spring(this.popupAnimatedValue, { toValue: 1, friction: 6 }),
           Animated.spring(this.bannerImageAnimatedValue, { toValue: 1, friction: 6 }),
         ]).start();
       });
@@ -285,10 +290,11 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         transparent
         visible={showPopupLayer}
         onRequestClose={this.onRequestClose}
+        // style={{ position: 'relative' }}
       >
-        {/* <Text>就的刷卡缴费加快速度</Text> */}
         {showPopupLayer && (
           <Animated.View style={[styles.popupLayer, this.popupLayerStyle]}>
+            {this.renderClose()}
             {this.renderModalContent(data[selectedIndex], selectedIndex)}
           </Animated.View>
         )}
@@ -300,13 +306,12 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
     <ScrollView bounces={false} style={styles.modalScrollview}>
       <Animated.Image source={{ uri: item }} style={this.bannerImageStyle} />
       <Text style={styles.text}>海内存知己，天涯若比邻,海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻,海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻海内存知己，天涯若比邻</Text>
-      {this.renderClose()}
     </ScrollView>
     )
 
   // 关闭按钮
   renderClose = () => (
-    <Animated.View style={this.closeStyle}>
+    <Animated.View style={[styles.closeStyle, this.closeStyle]}>
       <TouchableHighlight underlayColor="transparent" style={styles.closeContainer} onPress={this.onPressClose}>
         <View>
           <View style={[styles.forkLine, { top: +0.5, transform: [{ rotateZ: '45deg' }] }]} />
@@ -316,6 +321,7 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
     </Animated.View>
     );
 
+  // 关闭动画
   onPressClose = () => {
     Animated.parallel([
       Animated.timing(this.closeAnimatedValue, { toValue: 0 }),
@@ -343,9 +349,9 @@ export default class BottomPanResponseHeightAnimated extends PureComponent {
         <ScrollView style={styles.scroll}>
           {
           this.props.data.map((item, index) => (
-            <TouchableHighlight key={`${item}-${index}`} underlayColor="transparent" ref={component => { this.cardRefs[index] = component; }} onPress={() => this.onPress(index)}>
-              <View style={styles.scrollText}>
-                <Image style={{ height: 150 }} source={{ uri: item }} />
+            <TouchableHighlight style={styles.scrollText} key={`${item}-${index}`} underlayColor="transparent" ref={component => { this.cardRefs[index] = component; }} onPress={() => this.onPress(index)}>
+              <View>
+                <Image style={{ height: 210 }} source={{ uri: item }} />
                 <Text style={styles.text}>海内存知己，天涯若比邻</Text>
               </View>
             </TouchableHighlight>
