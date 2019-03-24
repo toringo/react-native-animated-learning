@@ -1,9 +1,16 @@
+/**
+ * 参考文章：
+ * https://www.race604.com/react-native-touch-event/
+ * https://juejin.im/post/5bbb2741f265da0aea6993ca
+ */
+
 import React, { PureComponent } from 'react';
 
 import { View, Text, Image, Animated, PanResponder, TouchableHighlight, StyleSheet, Dimensions, ScrollView, UIManager, Modal, findNodeHandle } from 'react-native';
 // import { ScrollView } from 'react-native-gesture-handler';
 
 import ButtonBack from '../ButtonBack';
+
 
 const styles = StyleSheet.create({
   wrap: {
