@@ -27,159 +27,161 @@ const styles = StyleSheet.create({
 });
 
 export default class DragSortableView extends Component {
-    componentWillMount() {
-        this.panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: (evt, gestureState) => true,
-            onStartShouldSetPanResponderCapture: (evt, gestureState) => {
-                this.isMovePanResponder = false;
-                return false;
-            },
-            onMoveShouldSetPanResponder: (evt, gestureState) => this.isMovePanResponder,
-            onMoveShouldSetPanResponderCapture: (evt, gestureState) => this.isMovePanResponder,
-
-            onPanResponderGrant: (evt, gestureState) => {},
-            onPanResponderMove: (evt, gestureState) => this.moveTouch(evt, gestureState),
-            onPanResponderRelease: (evt, gestureState) => this.endTouch(evt),
-
-            onPanResponderTerminationRequest: (evt, gestureState) => false,
-            onShouldBlockNativeResponder: (evt, gestureState) => false,
-        });
-    }
-
     constructor(props) {
         super();
 
         this.itemWidth = props.childrenWidth + props.marginChildrenLeft + props.marginChildrenRight;
         this.itemHeight = props.childrenHeight + props.marginChildrenTop + props.marginChildrenBottom;
+        this.panResponder = PanResponder.create({
+          onStartShouldSetPanResponder: (evt, gestureState) => true,
+          onStartShouldSetPanResponderCapture: (evt, gestureState) => {
+              this.isMovePanResponder = false;
+              return false;
+          },
+          onMoveShouldSetPanResponder: (evt, gestureState) => this.isMovePanResponder,
+          onMoveShouldSetPanResponderCapture: (evt, gestureState) => this.isMovePanResponder,
 
+          onPanResponderGrant: (evt, gestureState) => {},
+          onPanResponderMove: (evt, gestureState) => this.moveTouch(evt, gestureState),
+          onPanResponderRelease: (evt, gestureState) => this.endTouch(evt),
+
+          onPanResponderTerminationRequest: (evt, gestureState) => false,
+          onShouldBlockNativeResponder: (evt, gestureState) => false,
+        });
         this.reComplexDataSource(true, props);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.dataSource != nextProps.dataSource) {
+        if (this.props.dataSource !== nextProps.dataSource) {
             this.reComplexDataSource(false, nextProps);
         }
     }
 
+    // 长按动画开始移动
     startTouch(touchIndex) {
-        this.isHasMove = false;
+      this.isHasMove = false;
+      console.log('激活滑动元素');
+      if (!this.props.sortable) return;
 
-        if (!this.props.sortable) return;
-
-        if (sortRefs.has(touchIndex)) {
-            if (this.props.onDragStart) {
-                this.props.onDragStart(touchIndex);
-            }
-            Animated.timing(
-                this.state.dataSource[touchIndex].scaleValue,
-                {
-                    toValue: maxScale,
-                    duration: scaleDuration,
-                }
-            ).start(() => {
-                this.touchCurItem = {
-                    ref: sortRefs.get(touchIndex),
-                    index: touchIndex,
-                    originLeft: this.state.dataSource[touchIndex].originLeft,
-                    originTop: this.state.dataSource[touchIndex].originTop,
-                    moveToIndex: touchIndex,
-                };
-                this.isMovePanResponder = true;
-            });
+      if (sortRefs.has(touchIndex)) {
+        if (this.props.onDragStart) {
+          this.props.onDragStart(touchIndex);
         }
+        Animated.timing(
+          this.state.dataSource[touchIndex].scaleValue,
+          {
+              toValue: maxScale,
+              duration: scaleDuration,
+          }
+        ).start(() => {
+          // 移动元素信息
+          this.touchCurItem = {
+              ref: sortRefs.get(touchIndex),
+              index: touchIndex,
+              originLeft: this.state.dataSource[touchIndex].originLeft,
+              originTop: this.state.dataSource[touchIndex].originTop,
+              moveToIndex: touchIndex,
+          };
+          this.isMovePanResponder = true;
+        });
+      }
     }
 
 
     moveTouch(nativeEvent, gestureState) {
-        this.isHasMove = true;
+      this.isHasMove = true;
+      console.log('开始移动--->', this.touchCurItem.originLeft, gestureState.dx);
+      // if (this.isScaleRecovery) clearTimeout(this.isScaleRecovery)
 
-        // if (this.isScaleRecovery) clearTimeout(this.isScaleRecovery)
+      if (this.touchCurItem) {
+          let { dx } = gestureState;
+          let { dy } = gestureState;
 
-        if (this.touchCurItem) {
-            let { dx } = gestureState;
-            let { dy } = gestureState;
+          const rowNum = parseInt(this.props.parentWidth / this.itemWidth);
+          const maxWidth = this.props.parentWidth - this.itemWidth;
+          const maxHeight = this.itemHeight * Math.ceil(this.state.dataSource.length / rowNum) - this.itemHeight;
 
-            const rowNum = parseInt(this.props.parentWidth / this.itemWidth);
-            const maxWidth = this.props.parentWidth - this.itemWidth;
-            const maxHeight = this.itemHeight * Math.ceil(this.state.dataSource.length / rowNum) - this.itemHeight;
-
-            // 出界后取最大或最小值
-            if (this.touchCurItem.originLeft + dx < 0) {
-                dx = -this.touchCurItem.originLeft;
-            } else if (this.touchCurItem.originLeft + dx > maxWidth) {
-                dx = maxWidth - this.touchCurItem.originLeft;
-            }
-            if (this.touchCurItem.originTop + dy < 0) {
-                dy = -this.touchCurItem.originTop;
-            } else if (this.touchCurItem.originTop + dy > maxHeight) {
-                dy = maxHeight - this.touchCurItem.originTop;
-            }
-
-
-            const left = this.touchCurItem.originLeft + dx;
-            const top = this.touchCurItem.originTop + dy;
-
-            this.touchCurItem.ref.setNativeProps({
-                style: {
-                    zIndex: touchZIndex,
-                },
-            });
-
-            this.state.dataSource[this.touchCurItem.index].position.setValue({
-                x: left,
-                y: top,
-            });
+          // 当移动的距离大于距离左边的距离时
+          if (this.touchCurItem.originLeft + dx < 0) {
+            dx = -this.touchCurItem.originLeft;
+            // 当移动到右侧的距离大于最大移动范围时
+          } else if (this.touchCurItem.originLeft + dx > maxWidth) {
+            dx = maxWidth - this.touchCurItem.originLeft;
+          }
+          if (this.touchCurItem.originTop + dy < 0) {
+            dy = -this.touchCurItem.originTop;
+          } else if (this.touchCurItem.originTop + dy > maxHeight) {
+            dy = maxHeight - this.touchCurItem.originTop;
+          }
 
 
-            let moveToIndex = 0;
-            let moveXNum = dx / this.itemWidth;
-            let moveYNum = dy / this.itemHeight;
-            if (moveXNum > 0) {
-                moveXNum = parseInt(moveXNum + 0.5);
-            } else if (moveXNum < 0) {
-                moveXNum = parseInt(moveXNum - 0.5);
-            }
-            if (moveYNum > 0) {
-                moveYNum = parseInt(moveYNum + 0.5);
-            } else if (moveYNum < 0) {
-                moveYNum = parseInt(moveYNum - 0.5);
-            }
+          const left = this.touchCurItem.originLeft + dx;
+          const top = this.touchCurItem.originTop + dy;
 
-            moveToIndex = this.touchCurItem.index + moveXNum + moveYNum * rowNum;
+          this.touchCurItem.ref.setNativeProps({
+              style: {
+                  zIndex: touchZIndex,
+              },
+          });
 
-            if (moveToIndex > this.state.dataSource.length - 1) moveToIndex = this.state.dataSource.length - 1;
+          this.state.dataSource[this.touchCurItem.index].position.setValue({
+              x: left,
+              y: top,
+          });
 
-            if (this.touchCurItem.moveToIndex != moveToIndex) {
-                this.touchCurItem.moveToIndex = moveToIndex;
+          // 移动的位置判断， 移动了几个item， 覆盖下一个 0.5倍（一半）的距离就四舍五入为一格
+          let moveToIndex = 0;
+          let moveXNum = dx / this.itemWidth;
+          let moveYNum = dy / this.itemHeight;
+          if (moveXNum > 0) {
+              moveXNum = parseInt(moveXNum + 0.5);
+          } else if (moveXNum < 0) {
+              moveXNum = parseInt(moveXNum - 0.5);
+          }
+          if (moveYNum > 0) {
+              moveYNum = parseInt(moveYNum + 0.5);
+          } else if (moveYNum < 0) {
+              moveYNum = parseInt(moveYNum - 0.5);
+          }
+          // console.log('moveYNum', moveYNum, moveXNum);
+          // 移动到的位置赋值
+          moveToIndex = this.touchCurItem.index + moveXNum + moveYNum * rowNum;
 
-                this.state.dataSource.forEach((item, index) => {
-                    let nextItem = null;
-                    if (index > this.touchCurItem.index && index <= moveToIndex) {
-                        nextItem = this.state.dataSource[index - 1];
-                    } else if (index >= moveToIndex && index < this.touchCurItem.index) {
-                        nextItem = this.state.dataSource[index + 1];
-                    } else if (index != this.touchCurItem.index
-                        && (item.position.x._value != item.originLeft
-                            || item.position.y._value != item.originTop)) {
-                        nextItem = this.state.dataSource[index];
-                    } else if ((this.touchCurItem.index - moveToIndex > 0 && moveToIndex == index + 1)
-                        || (this.touchCurItem.index - moveToIndex < 0 && moveToIndex == index - 1)) {
-                        nextItem = this.state.dataSource[index];
-                    }
+          // 如果拖动的距离超过总块的个数，就赋值为总块的个数
+          if (moveToIndex > this.state.dataSource.length - 1) moveToIndex = this.state.dataSource.length - 1;
 
-                    if (nextItem != null) {
-                        Animated.timing(
-                            item.position,
-                            {
-                                toValue: { x: parseInt(nextItem.originLeft + 0.5), y: parseInt(nextItem.originTop + 0.5) },
-                                duration: slideDuration,
-                                easing: Easing.out(Easing.quad),
-                            }
-                        ).start();
-                    }
-                });
-            }
-        }
+          if (this.touchCurItem.moveToIndex !== moveToIndex) {
+              this.touchCurItem.moveToIndex = moveToIndex;
+
+              this.state.dataSource.forEach((item, index) => {
+                  let nextItem = null;
+                  // 向后移动
+                  if (index > this.touchCurItem.index && index <= moveToIndex) {
+                      nextItem = this.state.dataSource[index - 1];
+                  } else if (index >= moveToIndex && index < this.touchCurItem.index) {
+                      nextItem = this.state.dataSource[index + 1];
+                  } else if (index !== this.touchCurItem.index
+                      && (item.position.x._value !== item.originLeft
+                          || item.position.y._value !== item.originTop)) {
+                      nextItem = this.state.dataSource[index];
+                  } else if ((this.touchCurItem.index - moveToIndex > 0 && moveToIndex === index + 1)
+                      || (this.touchCurItem.index - moveToIndex < 0 && moveToIndex === index - 1)) {
+                      nextItem = this.state.dataSource[index];
+                  }
+
+                  if (nextItem != null) {
+                      Animated.timing(
+                          item.position,
+                          {
+                              toValue: { x: parseInt(nextItem.originLeft + 0.5), y: parseInt(nextItem.originTop + 0.5) },
+                              duration: slideDuration,
+                              easing: Easing.out(Easing.quad),
+                          }
+                      ).start();
+                  }
+              });
+          }
+      }
     }
 
     endTouch(nativeEvent) {
@@ -216,7 +218,7 @@ export default class DragSortableView extends Component {
     }
 
     changePosition(startIndex, endIndex) {
-        if (startIndex == endIndex) {
+        if (startIndex === endIndex) {
             const curItem = this.state.dataSource[startIndex];
             this.state.dataSource[startIndex].position.setValue({
                 x: parseInt(curItem.originLeft + 0.5),
@@ -238,12 +240,12 @@ export default class DragSortableView extends Component {
             if (isCommon) {
                 if (endIndex > index && index >= startIndex) {
                     newIndex = index + 1;
-                } else if (endIndex == index) {
+                } else if (endIndex === index) {
                     newIndex = startIndex;
                 }
             } else if (endIndex >= index && index > startIndex) {
                     newIndex = index - 1;
-                } else if (startIndex == index) {
+                } else if (startIndex === index) {
                     newIndex = endIndex;
                 }
 
@@ -300,17 +302,10 @@ export default class DragSortableView extends Component {
             return newData;
         });
 
-        if (isInit) {
-            this.state = {
-                dataSource,
-                height: Math.ceil(dataSource.length / rowNum) * this.itemHeight,
-            };
-        } else {
-            this.setState({
-                dataSource,
-                height: Math.ceil(dataSource.length / rowNum) * this.itemHeight,
-            });
-        }
+        this.state = {
+          dataSource,
+          height: Math.ceil(dataSource.length / rowNum) * this.itemHeight,
+        };
     }
 
     getOriginalData() {
@@ -327,42 +322,42 @@ export default class DragSortableView extends Component {
                 }]}
           >
             {
-                    this.state.dataSource.map((item, index) => (
-                      <Animated.View
-                        key={item.originIndex}
-                        ref={(ref) => sortRefs.set(index, ref)}
-                        {...this.panResponder.panHandlers}
-                        style={[styles.item, {
-                            marginTop: this.props.marginChildrenTop,
-                            marginBottom: this.props.marginChildrenBottom,
-                            marginLeft: this.props.marginChildrenLeft,
-                            marginRight: this.props.marginChildrenRight,
-                            left: item.position.x,
-                            top: item.position.y,
-                            opacity: item.scaleValue.interpolate({
-                                inputRange: [1, maxScale],
-                                outputRange: [1, minOpacity],
-                            }),
-                            transform: [
-                                { scale: item.scaleValue },
-                            ],
-                        }]}
-                      >
-                        <TouchableOpacity
-                          activeOpacity={1}
-                          onPressOut={() => this.onPressOut()}
-                          onLongPress={() => this.startTouch(index)}
-                          onPress={() => {
-                            if (this.props.onClickItem) {
-                              this.props.onClickItem(this.getOriginalData(), item.data, index);
-                            }
-                          }}
-                        >
-                          {this.props.renderItem(item.data, index)}
-                        </TouchableOpacity>
-                      </Animated.View>
-                        ))
-                }
+              this.state.dataSource.map((item, index) => (
+                <Animated.View
+                  key={item.originIndex}
+                  ref={(ref) => sortRefs.set(index, ref)}
+                  {...this.panResponder.panHandlers}
+                  style={[styles.item, {
+                      marginTop: this.props.marginChildrenTop,
+                      marginBottom: this.props.marginChildrenBottom,
+                      marginLeft: this.props.marginChildrenLeft,
+                      marginRight: this.props.marginChildrenRight,
+                      left: item.position.x,
+                      top: item.position.y,
+                      opacity: item.scaleValue.interpolate({
+                          inputRange: [1, maxScale],
+                          outputRange: [1, minOpacity],
+                      }),
+                      transform: [
+                          { scale: item.scaleValue },
+                      ],
+                  }]}
+                >
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPressOut={() => this.onPressOut()}
+                    onLongPress={() => this.startTouch(index)}
+                    onPress={() => {
+                      if (this.props.onClickItem) {
+                        this.props.onClickItem(this.getOriginalData(), item.data, index);
+                      }
+                    }}
+                  >
+                    {this.props.renderItem(item.data, index)}
+                  </TouchableOpacity>
+                </Animated.View>
+              ))
+            }
           </View>
         );
     }
@@ -400,5 +395,3 @@ DragSortableView.defaultProps = {
     parentWidth: width,
     sortable: true,
 };
-
-

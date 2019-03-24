@@ -14,7 +14,7 @@ import BottomPanResponseHeightAnimated from './animte/BottomPanResponseHeightAni
 import BottomResponseHeightAnimated from './animte/BottomResponseHeightAnimated';
 
 import MultipleScrollView from './MultipleScrollView';
-import ListDragAnimated from './animte/ListDragAnimated';
+import DragBlockSort from './animte/DragBlockSort';
 
 
 const AppNavigators = createAppContainer(
@@ -33,10 +33,10 @@ const AppNavigators = createAppContainer(
       BottomPanResponseHeightAnimated,
       BottomResponseHeightAnimated,
       MultipleScrollView,
-      ListDragAnimated,
+      DragBlockSort,
     },
     {
-      initialRouteName: 'ListDragAnimated',
+      initialRouteName: 'DragBlockSort',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,

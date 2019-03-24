@@ -211,7 +211,10 @@ export default class CommonSortPage extends Component {
 
     onSelectedDragEnd = () => this.setState({ scrollEnabled: true })
 
+    // 开始拖动
     onSelectedDragStart = () => {
+      console.log('滑动开始');
+
         if (!this.state.isEditState) {
             this.setState({
                 isEditState: true,
