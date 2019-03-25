@@ -84,7 +84,10 @@ export default class Main extends Component<Props> {
           onPress={() => this.props.navigation.navigate('MultipleScrollView')}
           title="MultipleScrollView"
         />
-
+        <Button
+          onPress={() => this.props.navigation.navigate('WebViewPage')}
+          title="Webview page"
+        />
 
       </View>
     );
