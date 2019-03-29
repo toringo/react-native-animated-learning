@@ -16,6 +16,9 @@ import BottomResponseHeightAnimated from './animte/BottomResponseHeightAnimated'
 import MultipleScrollView from './MultipleScrollView';
 import DragBlockSort from './animte/DragBlockSort';
 import WebViewPage from './WebViewPage';
+import Linking from './Linking';
+import Clipboard from './Clipboard';
+import CextendsB from './aExtendsB/C';
 
 
 const AppNavigators = createAppContainer(
@@ -36,6 +39,9 @@ const AppNavigators = createAppContainer(
       MultipleScrollView,
       DragBlockSort,
       WebViewPage,
+      Linking,
+      Clipboard,
+      CextendsB,
     },
     {
       initialRouteName: 'Main',

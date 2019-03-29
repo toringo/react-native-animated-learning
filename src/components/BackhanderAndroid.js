@@ -6,7 +6,6 @@ export default class BackHandlerAndroid {
   }
 
   componentDidMount() {
-    console.log('BackHandlerAndroid-componentDidMount', this.props);
     if (this.props.handleBack) BackHandler.addEventListener('hardwareBackPress', this.props.handleBack);
   }
 

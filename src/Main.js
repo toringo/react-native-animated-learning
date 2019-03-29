@@ -89,6 +89,19 @@ export default class Main extends Component<Props> {
           title="Webview page"
         />
 
+        <Button
+          onPress={() => this.props.navigation.navigate('Linking')}
+          title="Linking"
+        />
+
+        <Button
+          onPress={() => this.props.navigation.navigate('Clipboard')}
+          title="Clipboard"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('CextendsB')}
+          title="CextendsB"
+        />
       </View>
     );
   }
