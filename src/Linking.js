@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Linking, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Linking, Text, TouchableHighlight } from 'react-native';
 import ButtonBack from './ButtonBack';
 
 
@@ -23,11 +22,12 @@ export default class WebViewPage extends React.PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <ButtonBack onPress={() => this.props.navigation.goBack()} />
-        <TouchableOpacity
+        <TouchableHighlight
           onPress={this.linking}
+          style={{ padding: 15 }}
         >
           <Text>Linking Email</Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
     );
   }

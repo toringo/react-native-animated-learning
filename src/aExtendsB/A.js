@@ -2,7 +2,7 @@
  * @Author: toringo
  * @Date: 2019-03-28 22:14:10
  * @Last Modified by: tori
- * @Last Modified time: 2019-03-29 08:10:51
+ * @Last Modified time: 2019-03-29 21:42:38
  */
 
 import React, { Component } from 'react';
@@ -16,11 +16,10 @@ export default class A extends Component {
     };
 
     constructor(props) {
-        super(props);
-        console.log('aaa', this.props);
-        this.state = {
-            isHide: this.props.isHide,
-        };
+      super(props);
+      this.state = {
+          isHide: this.props.isHide,
+      };
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {

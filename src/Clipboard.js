@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Clipboard, Text } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Clipboard, Text, TouchableHighlight } from 'react-native';
 
 import Toast from 'react-native-root-toast';
 
@@ -42,11 +41,12 @@ export default class Clipboards extends React.PureComponent {
     return (
       <View style={{ flex: 1 }}>
         <ButtonBack onPress={() => this.props.navigation.goBack()} />
-        <TouchableOpacity
+        <TouchableHighlight
+          style={{ padding: 15 }}
           onPress={() => this.clipboard('toringona@gmail.com')}
         >
           <Text>click Copy Email: toringona@gmail.com</Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
     );
   }
