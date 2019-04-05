@@ -10,10 +10,18 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import "RNUMConfigure.h"
+#import "UMAnalytics/MobClick.h"
+
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [MobClick setScenarioType:E_UM_NORMAL];
+  [UMConfigure setLogEnabled:YES];
+  [RNUMConfigure initWithAppkey:@"5ca7529d0cafb2d160001240" channel:@"App Store"];
+
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];

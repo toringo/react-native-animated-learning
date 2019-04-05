@@ -10,6 +10,7 @@ target 'reactNativeAnimated' do
     
     # 统计
     pod 'UMCAnalytics'
+    pod 'UMengAnalytics'
     
     # 分享与登录
     # U-Share SDK UI模块（分享面板，建议添加）
