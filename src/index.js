@@ -15,6 +15,8 @@ import BottomResponseHeightAnimated from './animte/BottomResponseHeightAnimated'
 
 import MultipleScrollView from './MultipleScrollView';
 import DragBlockSort from './animte/DragBlockSort';
+import DragList from './DragList';
+
 import WebViewPage from './WebViewPage';
 import Linking from './Linking';
 import Clipboard from './Clipboard';
@@ -38,6 +40,7 @@ const AppNavigators = createAppContainer(
       BottomResponseHeightAnimated,
       MultipleScrollView,
       DragBlockSort,
+      DragList,
       WebViewPage,
       Linking,
       Clipboard,

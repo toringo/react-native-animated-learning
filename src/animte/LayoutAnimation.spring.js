@@ -78,7 +78,6 @@ export default class App extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('this.', this.state.w);
     return (
       <View style={styles.container}>
         <View style={[styles.box, { width: this.state.w, height: this.state.h }]} />

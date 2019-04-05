@@ -63,7 +63,6 @@ type Props = {};
 
 export default class Main extends Component<Props> {
   render() {
-    console.log('this.props', this.props);
     return (
       <View style={styles.container}>
         {/* <ButtonBack {...this.props} /> */}
@@ -87,6 +86,15 @@ export default class Main extends Component<Props> {
         <Button
           onPress={() => this.props.navigation.navigate('WebViewPage')}
           title="Webview page"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('DragBlockSort')}
+          title="DragBlockSort"
+        />
+
+        <Button
+          onPress={() => this.props.navigation.navigate('DragList')}
+          title="DragList"
         />
 
         <Button

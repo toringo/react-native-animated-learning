@@ -47,7 +47,6 @@ export default class WebViewPage extends React.PureComponent {
   onLoad=() => {
     const runFirst = `
       document.body.style.backgroundColor = 'grey';
-      window.alert('hi');
       true; // note: this is required, or you'll sometimes get silent failures
     `;
     this.webview.injectJavaScript(runFirst);

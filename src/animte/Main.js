@@ -126,6 +126,11 @@ export default class Main extends Component<Props> {
           title="BottomResponseHeightAnimated"
         />
 
+        <Button
+          onPress={() => this.props.navigation.navigate('BottomResponseHeightAnimated')}
+          title="BottomResponseHeightAnimated"
+        />
+
 
       </View>
     );

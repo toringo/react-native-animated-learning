@@ -9,7 +9,8 @@ import {
     ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DragSortableView from './DragSortableView';
+import DragSortableView from '../components/DragSortableView';
+import ButtonBack from '../ButtonBack';
 
 const deviceWidth = Dimensions.get('window').width;
 const childrenWidth = deviceWidth / 4;
@@ -149,43 +150,46 @@ export default class CommonSortPage extends Component {
 
     render() {
         return (
-          <ScrollView
-            scrollEnabled={this.state.scrollEnabled}
-            style={styles.container}
-          >
-            <View style={styles.hurdle}>
-              <Text style={styles.hurdle_title}>我的频道</Text>
-              <TouchableOpacity style={styles.hurdle_edit} onPress={this.onEditClick}>
-                <Text style={styles.hurdle_edit_text}>{this.state.isEditState ? '完成' : '编辑'}</Text>
-              </TouchableOpacity>
-            </View>
-            <DragSortableView
-              dataSource={this.state.selectedItems}
-              parentWidth={sortWidth}
-              childrenWidth={childrenWidth}
-              childrenHeight={childrenHeight}
-              marginChildrenTop={10}
-              onDragStart={this.onSelectedDragStart}
-              onDragEnd={this.onSelectedDragEnd}
-              onDataChange={(data) => { this.setState({ selectedItems: data }); }}
-              onClickItem={this.onSelectedClickItem}
-              renderItem={this.renderSelectedItemView}
-            />
-            <View style={[styles.hurdle, { justifyContent: 'flex-start', marginTop: 40 }]}>
-              <Text style={styles.hurdle_title}>推荐频道</Text>
-            </View>
-            <DragSortableView
-              dataSource={this.state.unselectedItems}
-              parentWidth={sortWidth}
-              sortable={false}
-              childrenWidth={childrenWidth}
-              childrenHeight={childrenHeight}
-              marginChildrenTop={10}
-              onDataChange={(data) => { this.setState({ unselectedItems: data }); }}
-              onClickItem={this.onUnSelectedClickItem}
-              renderItem={this.renderUnSelectedItemView}
-            />
-          </ScrollView>
+          <>
+            <View><ButtonBack onPress={() => this.props.navigation.goBack()} /></View>
+            <ScrollView
+              scrollEnabled={this.state.scrollEnabled}
+              style={styles.container}
+            >
+              <View style={styles.hurdle}>
+                <Text style={styles.hurdle_title}>我的频道</Text>
+                <TouchableOpacity style={styles.hurdle_edit} onPress={this.onEditClick}>
+                  <Text style={styles.hurdle_edit_text}>{this.state.isEditState ? '完成' : '编辑'}</Text>
+                </TouchableOpacity>
+              </View>
+              <DragSortableView
+                dataSource={this.state.selectedItems}
+                parentWidth={sortWidth}
+                childrenWidth={childrenWidth}
+                childrenHeight={childrenHeight}
+                marginChildrenTop={10}
+                onDragStart={this.onSelectedDragStart}
+                onDragEnd={this.onSelectedDragEnd}
+                onDataChange={(data) => { this.setState({ selectedItems: data }); }}
+                onClickItem={this.onSelectedClickItem}
+                renderItem={this.renderSelectedItemView}
+              />
+              <View style={[styles.hurdle, { justifyContent: 'flex-start', marginTop: 40 }]}>
+                <Text style={styles.hurdle_title}>推荐频道</Text>
+              </View>
+              <DragSortableView
+                dataSource={this.state.unselectedItems}
+                parentWidth={sortWidth}
+                sortable={false}
+                childrenWidth={childrenWidth}
+                childrenHeight={childrenHeight}
+                marginChildrenTop={10}
+                onDataChange={(data) => { this.setState({ unselectedItems: data }); }}
+                onClickItem={this.onUnSelectedClickItem}
+                renderItem={this.renderUnSelectedItemView}
+              />
+            </ScrollView>
+          </>
         );
     }
 
