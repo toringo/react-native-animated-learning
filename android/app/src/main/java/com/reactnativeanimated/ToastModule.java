@@ -12,6 +12,9 @@ import com.facebook.react.bridge.ReactMethod;
 
 import java.util.Map;
 
+import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
+
 import java.util.HashMap;
 
 public class ToastModule extends ReactContextBaseJavaModule {
@@ -35,17 +38,18 @@ public class ToastModule extends ReactContextBaseJavaModule {
   private static final String E_FUNCTION_ERROR = "E_FUNCTION_ERROR";
 
   @ReactMethod
-  public void show(String message, int duration) {
-    // try {
-    Toast.makeText(getReactApplicationContext(), message, duration).show();
-    String parma1 = message;
-    String parma2 = "收到回调信息";
-    // successCallback.invoke(parma1, parma2);
-    // return promise.resolve(parma2);
-    // } catch (IllegalViewOperationException e) { // 回调失败，返回错误信息
-    // errorCallback.invoke(e.getMessage());
-    // return promise.reject(E_FUNCTION_ERROR, e);
-    // }
+  // Callback successCallback, Callback errorCallback
+  public void show(String message, int duration, Promise promise) {
+    try {
+      Toast.makeText(getReactApplicationContext(), message, duration).show();
+      String parma1 = message;
+      String parma2 = "收到回调信息";
+      // successCallback.invoke(parma1, parma2);
+      promise.resolve(parma2);
+    } catch (Exception e) { // 回调失败，返回错误信息
+      // errorCallback.invoke(e.getMessage());
+      promise.reject(E_FUNCTION_ERROR, e);
+    }
   }
 
   public ToastModule(ReactApplicationContext reactContext) {

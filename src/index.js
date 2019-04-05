@@ -22,6 +22,7 @@ import Linking from './Linking';
 import Clipboard from './Clipboard';
 import CextendsB from './aExtendsB/C';
 import ModulesIos from './ModulesAndroid';
+import Share from './Share';
 
 
 const AppNavigators = createAppContainer(
@@ -47,9 +48,10 @@ const AppNavigators = createAppContainer(
       Clipboard,
       CextendsB,
       ModulesIos,
+      Share,
     },
     {
-      initialRouteName: 'ModulesIos',
+      initialRouteName: 'Share',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,
