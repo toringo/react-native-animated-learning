@@ -2,17 +2,18 @@
  * @Author: toringo
  * @Date: 2019-04-05 18:18:10
  * @Last Modified by: tori
- * @Last Modified time: 2019-04-06 10:57:45
+ * @Last Modified time: 2019-04-07 11:49:58
  */
 
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import ToastExample from './components/Share';
+import AnalyticsUtil from './components/AnalyticsUtil';
 
 
 export default class ModulesIos extends Component {
   handleShow = () => {
-
+    AnalyticsUtil.track('ClickAnalysis');
   }
 
     render() {
