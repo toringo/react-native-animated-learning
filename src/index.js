@@ -23,6 +23,7 @@ import Clipboard from './Clipboard';
 import CextendsB from './aExtendsB/C';
 import ModulesIos from './ModulesAndroid';
 import Tongji from './Tongji';
+import Share from './Share';
 
 
 const AppNavigators = createAppContainer(
@@ -49,9 +50,10 @@ const AppNavigators = createAppContainer(
       CextendsB,
       ModulesIos,
       Tongji,
+      Share,
     },
     {
-      initialRouteName: 'Tongji',
+      initialRouteName: 'Share',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,

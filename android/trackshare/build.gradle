@@ -33,4 +33,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     api 'com.umeng.umsdk:analytics:7.5.4'
     api 'com.umeng.umsdk:common:1.5.4'
+    api files('libs/umeng-share-core-6.9.3.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.3.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.3.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.3.jar')
+    api files('libs/umeng-shareboard-widget-6.9.3.jar')
+    api files('libs/umeng-sharetool-6.9.3.jar')
 }

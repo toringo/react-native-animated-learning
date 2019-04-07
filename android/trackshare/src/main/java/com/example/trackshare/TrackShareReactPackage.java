@@ -15,7 +15,7 @@ public class TrackShareReactPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new AnalyticsModule(reactContext));
-//        modules.add(new ShareModule(reactContext));
+        modules.add(new ShareModule(reactContext));
         return modules;
     }
 
