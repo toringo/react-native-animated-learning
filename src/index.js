@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Easing, Platform, Animated } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+
 import { createStackNavigator, createAppContainer, SafeAreaView } from 'react-navigation';
 import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator';
 
@@ -82,10 +84,17 @@ export default class App extends React.Component {
     scrollY: new Animated.Value(0),
   };
 
+  componentDidMount() {
+    // do stuff while splash screen is shown
+      // After having done stuff (such as async tasks) hide the splash screen
+      SplashScreen.hide();
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <NativeViewGestureHandler>
+          {/* 可以通过向 SafeAreaView 传递 forceInset 来删除 底部的 padding。 */}
           <SafeAreaView
             forceInset={{ top: 'always', bottom: 'always' }}
             style={{ backgroundColor: 'red', flex: 1 }}

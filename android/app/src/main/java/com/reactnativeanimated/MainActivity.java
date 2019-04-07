@@ -1,4 +1,5 @@
 package com.reactnativeanimated;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -6,7 +7,7 @@ import com.example.trackshare.ShareModule;
 import com.facebook.react.ReactActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
-
+import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
@@ -21,14 +22,13 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    // SplashScreen.show(this); // here
+    SplashScreen.show(this, true); // here
     super.onCreate(savedInstanceState);
     // 以及发送间隔
     MobclickAgent.setSessionContinueMillis(1000);
     // 统计的场景
-     MobclickAgent.setScenarioType(this,
-     MobclickAgent.EScenarioType.E_DUM_NORMAL);
-     ShareModule.initSocialSDK(this);
+    MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_DUM_NORMAL);
+    ShareModule.initSocialSDK(this);
   }
 
   @Override
@@ -36,6 +36,7 @@ public class MainActivity extends ReactActivity {
     super.onActivityResult(requestCode, resultCode, data);
     UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
   }
+
   public void onResume() {
     super.onResume();
     MobclickAgent.onResume(this);

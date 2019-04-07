@@ -9,18 +9,18 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-
-#import "RNUMConfigure.h"
-#import "UMAnalytics/MobClick.h"
+#import "RNSplashScreen.h" 
+// #import "RNUMConfigure.h"
+// #import "UMAnalytics/MobClick.h"
 
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [MobClick setScenarioType:E_UM_NORMAL];
-  [UMConfigure setLogEnabled:YES];
-  [RNUMConfigure initWithAppkey:@"5ca7529d0cafb2d160001240" channel:@"App Store"];
+  // [MobClick setScenarioType:E_UM_NORMAL];
+  // [UMConfigure setLogEnabled:YES];
+  // [RNUMConfigure initWithAppkey:@"5ca7529d0cafb2d160001240" channel:@"App Store"];
 
   NSURL *jsCodeLocation;
 
@@ -31,12 +31,12 @@
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [UIColor blackColor];
-
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  [RNSplashScreen show];
   return YES;
 }
 
