@@ -116,8 +116,8 @@ export default class Main extends Component<Props> {
         />
 
         <Button
-          onPress={() => this.props.navigation.navigate('Share')}
-          title="Share"
+          onPress={() => this.props.navigation.navigate('Tongji')}
+          title="Tongji"
         />
       </View>
     );

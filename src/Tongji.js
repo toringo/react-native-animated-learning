@@ -2,7 +2,7 @@
  * @Author: toringo
  * @Date: 2019-04-05 18:18:10
  * @Last Modified by: tori
- * @Last Modified time: 2019-04-05 18:18:31
+ * @Last Modified time: 2019-04-06 10:57:45
  */
 
 import React, { Component } from 'react';
@@ -19,7 +19,7 @@ export default class ModulesIos extends Component {
       return (
         <View>
           <TouchableOpacity style={{ padding: 15, backgroundColor: '#527FF6' }} onPress={this.handleShow}>
-            <Text>点击分享</Text>
+            <Text>统计</Text>
           </TouchableOpacity>
         </View>
       );
