@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Easing, Platform, Animated } from 'react-native';
+import { View, Easing, Platform, Animated, AppState } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-
+import codePush from 'react-native-code-push';
 import { createStackNavigator, createAppContainer, SafeAreaView } from 'react-navigation';
 import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator';
 
@@ -55,7 +55,7 @@ const AppNavigators = createAppContainer(
       Share,
     },
     {
-      initialRouteName: 'Share',
+      initialRouteName: 'Main',
       headerMode: 'none',
       /*
      * Use modal on iOS because the card mode comes from the right,
@@ -79,15 +79,22 @@ const AppNavigators = createAppContainer(
   )
 );
 
-export default class App extends React.Component {
+class App extends React.Component {
   state = {
     scrollY: new Animated.Value(0),
   };
 
   componentDidMount() {
     // do stuff while splash screen is shown
-      // After having done stuff (such as async tasks) hide the splash screen
-      SplashScreen.hide();
+    // After having done stuff (such as async tasks) hide the splash screen
+    SplashScreen.hide();
+    // 如果更新是强制性的，更新文件下载好之后会立即进行更新。
+    // 如果你期望更及时的获得更新，可以在每次APP从后台进入前台的时候去主动的检查更新
+    AppState.addEventListener('change', (newState) => {
+      if (newState === 'active') codePush.sync();
+    });
+    // 如果可以进行更新，CodePush会在后台静默地将更新下载到本地，等待APP下一次启动的时候应用更新，以确保用户看到的是最新版本。
+    codePush.sync();
   }
 
   render() {
@@ -106,3 +113,10 @@ export default class App extends React.Component {
     );
   }
 }
+
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  installMode: codePush.InstallMode.ON_NEXT_RESTART,
+};
+
+export default codePush(codePushOptions)(App);

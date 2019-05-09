@@ -2,11 +2,12 @@
  * @Author: toringo
  * @Date: 2019-04-05 18:18:10
  * @Last Modified by: tori
- * @Last Modified time: 2019-04-07 12:38:20
+ * @Last Modified time: 2019-04-28 20:40:50
  */
 
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
+import ButtonBack from './ButtonBack';
 import ShareUtil from './components/Share';
 
 
@@ -20,8 +21,9 @@ export default class ModulesIos extends Component {
     render() {
       return (
         <View>
+          <ButtonBack onPress={() => this.props.navigation.goBack()} />
           <TouchableOpacity style={{ padding: 15, backgroundColor: '#527FF6' }} onPress={this.handleShow}>
-            <Text>分享</Text>
+            <Text>分享沟沟壑壑好久好久 codepush-----和健身房和水电费环境</Text>
           </TouchableOpacity>
         </View>
       );

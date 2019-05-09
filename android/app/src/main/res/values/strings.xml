@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">reactNativeAnimated</string>
+    <string name="reactNativeCodePush_androidDeploymentKey" moduleConfig="true">QA2P6ML888DCW4b01uZtDvqn0Lqkb721a94f-71a3-4b9e-89ab-eb937371a75c</string>
+    <string name="app_name">RN-Demo</string>
 </resources>

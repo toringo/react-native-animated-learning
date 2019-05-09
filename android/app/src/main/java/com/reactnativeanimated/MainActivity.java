@@ -2,12 +2,12 @@ package com.reactnativeanimated;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.example.trackshare.ShareModule;
 import com.facebook.react.ReactActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 import org.devio.rn.splashscreen.SplashScreen;
+
 
 public class MainActivity extends ReactActivity {
 
@@ -37,11 +37,13 @@ public class MainActivity extends ReactActivity {
     UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
   }
 
+  @Override
   public void onResume() {
     super.onResume();
     MobclickAgent.onResume(this);
   }
 
+  @Override
   public void onPause() {
     super.onPause();
     MobclickAgent.onPause(this);

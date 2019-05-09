@@ -6,11 +6,17 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "ios": "react-native run-ios",
-    "android": "react-native run-android"
+    "android": "react-native run-android",
+    "build:android:upload": "./androidBuild.sh",
+    "build:ios:upload": "./iosBuild.sh",
+    "build:ios:dev": "./iosDevBuild.sh",
+    "android:clean": "cd ./android && ./gradlew clean",
+    "ios:clean": "cd ios && xcodebuild clean"
   },
   "dependencies": {
     "react": "16.6.3",
     "react-native": "0.58.5",
+    "react-native-code-push": "^5.6.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-root-toast": "^3.0.2",
     "react-native-sortable-listview": "^0.2.8",
