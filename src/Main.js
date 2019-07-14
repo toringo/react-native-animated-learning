@@ -68,61 +68,76 @@ export default class Main extends Component<Props> {
         {/* <ButtonBack {...this.props} /> */}
         <Button
           onPress={() => this.props.navigation.navigate('Animate')}
-          title="Animate"
+          title="Animate 动画"
         />
         <Button
           onPress={() => this.props.navigation.navigate('Swiper')}
-          title="SwiperFlatlist"
+          title="SwiperFlatlist 左滑列表"
         />
         <Button
           onPress={() => this.props.navigation.navigate('StatusGradient')}
-          title="StatusGradient"
+          title="StatusGradient 状态栏滚动渐变"
         />
 
         <Button
           onPress={() => this.props.navigation.navigate('MultipleScrollView')}
-          title="MultipleScrollView"
+          title="MultipleScrollView 多个scroll滚动优化"
         />
         <Button
           onPress={() => this.props.navigation.navigate('WebViewPage')}
-          title="Webview page"
+          title="Webview page webview 用法"
         />
         <Button
           onPress={() => this.props.navigation.navigate('DragBlockSort')}
-          title="DragBlockSort"
+          title="DragBlockSort view拖拽排序"
         />
 
         <Button
           onPress={() => this.props.navigation.navigate('DragList')}
-          title="DragList"
+          title="DragList 列表拖拽排序"
         />
 
         <Button
           onPress={() => this.props.navigation.navigate('Linking')}
-          title="Linking"
+          title="Linking 打开邮箱等"
         />
 
         <Button
           onPress={() => this.props.navigation.navigate('Clipboard')}
-          title="Clipboard"
+          title="Clipboard 剪贴板"
         />
         <Button
           onPress={() => this.props.navigation.navigate('CextendsB')}
-          title="CextendsB"
+          title="CextendsB 组件继承"
         />
         <Button
           onPress={() => this.props.navigation.navigate('ModulesIos')}
-          title="ModulesIos"
+          title="ModulesAndroid 原生模块调用"
         />
 
         <Button
           onPress={() => this.props.navigation.navigate('Tongji')}
-          title="Tongji"
+          title="Tongji 友盟统计"
         />
         <Button
           onPress={() => this.props.navigation.navigate('Share')}
-          title="Share"
+          title="Share 友盟分享"
         />
+
+        <Button
+          onPress={() => this.props.navigation.navigate('flatlist')}
+          title="MyFlatlist 长列表优化"
+        />
+
+        <Button
+          onPress={() => this.props.navigation.navigate('flatlist2')}
+          title="MyFlatlist 长列表优化2"
+        />
+        <Button
+          onPress={() => this.props.navigation.navigate('optimize')}
+          title="optimize 性能优化"
+        />
+
       </View>
     );
   }

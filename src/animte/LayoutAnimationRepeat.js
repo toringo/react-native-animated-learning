@@ -741,13 +741,13 @@ export default class extends Component {
           />
 
           <View style={{
-                  width: 240,
-                  height: 120,
-                  position: 'absolute',
-                  left: 80,
-                  top: 200,
-                  backgroundColor: 'red',
-              }}
+            width: 240,
+            height: 120,
+            position: 'absolute',
+            left: 80,
+            top: 200,
+            backgroundColor: 'red',
+          }}
           >
             <Text style={{ color: '#FFD700', fontSize: 90, lineHeight: 104, width: 240, textAlign: 'center' }}>红包</Text>
           </View>

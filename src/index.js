@@ -26,6 +26,10 @@ import CextendsB from './aExtendsB/C';
 import ModulesIos from './ModulesAndroid';
 import Tongji from './Tongji';
 import Share from './Share';
+import flatlist from './MyFlatlist';
+import flatlist2 from './MyFlatlist2';
+
+import optimize from './Optimizes';
 
 
 const AppNavigators = createAppContainer(
@@ -53,6 +57,9 @@ const AppNavigators = createAppContainer(
       ModulesIos,
       Tongji,
       Share,
+      flatlist,
+      flatlist2,
+      optimize,
     },
     {
       initialRouteName: 'Main',

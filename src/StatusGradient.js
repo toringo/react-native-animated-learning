@@ -120,9 +120,9 @@ export default class Swiper extends Component<Props> {
       ];
     const { navigation } = this.props;
 
-    const scale = this.state.scrollY.interpolate({
+    this.scale = this.state.scrollY.interpolate({
       inputRange: [-450, 0, 100],
-      outputRange: [2, 1, 0.8],
+      outputRange: [3, 1, 0.8],
       extrapolate: 'clamp',
     });
 
@@ -151,7 +151,7 @@ export default class Swiper extends Component<Props> {
           )}
         >
           <Animated.View
-            style={{ opacity, transform: [{ scale }, { translateY }] }}
+            style={{ opacity, transform: [{ scale: this.scale }, { translateY }] }}
           >
             <SafeAreaView
               style={styles.bannerContainer}
